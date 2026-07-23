@@ -1,7 +1,47 @@
 import Head from 'next/head'
 import Layout from '../components/Layout'
 
-export default function Projects(){
+const projects = [
+  {
+    title: 'Finance Personal Assistant LLM',
+    desc: 'Multi-agent LLM-based financial assistant built with FastAPI and OpenAI integrations for expense analysis, budgeting, and financial recommendations. Backend uses Pydantic for validation.',
+    icon: '/assets/icons/projects/finance-llm.svg',
+    tags: ['FastAPI', 'Python', 'OpenAI', 'Pydantic'],
+    links: [
+      { label: 'Repository', url: 'https://github.com/ali-murtadho/LLM-Finance-Assistant' }
+    ]
+  },
+  {
+    title: 'Finance Management App',
+    desc: 'Interactive frontend app (React / Inertia) and scalable backend (Golang) for personal finance tracking. Implements role-based auth and microservice patterns.',
+    icon: '/assets/icons/projects/finance-app.svg',
+    tags: ['React', 'Inertia.js', 'Golang', 'Microservices'],
+    links: [
+      { label: 'Frontend', url: 'https://github.com/ali-murtadho/react-frontend-manajemen-keuangan/tree/dev-bs' },
+      { label: 'Backend', url: 'https://github.com/ali-murtadho/go-backend-manajemen-keuangan' }
+    ]
+  },
+  {
+    title: 'Blog Backend RESTful API',
+    desc: 'High-performance RESTful API using Golang Gin framework. Features JWT authentication, role-based access control, and auto-generated Swagger API documentation.',
+    icon: '/assets/icons/projects/blog-api.svg',
+    tags: ['Golang', 'Gin', 'JWT', 'Swagger', 'PostgreSQL'],
+    links: [
+      { label: 'Repository', url: 'https://github.com/ali-murtadho/Blogs-Project-Backend-App' }
+    ]
+  },
+  {
+    title: 'Klasifikasi Kualitas Padi Organik (wkpo-app-v2)',
+    desc: 'Agricultural information system using Python Django and Scikit-Learn (C4.5 Decision Tree) for classifying organic rice quality. Features data visualization and model accuracy metrics.',
+    icon: '/assets/icons/projects/wkpo.svg',
+    tags: ['Python', 'Django', 'Scikit-Learn', 'Machine Learning'],
+    links: [
+      { label: 'Repository', url: 'https://github.com/ali-murtadho/wkpo-app-v2' }
+    ]
+  }
+]
+
+export default function Projects() {
   return (
     <Layout>
       <Head>
@@ -10,26 +50,38 @@ export default function Projects(){
       </Head>
 
       <main>
-        <h1>Projects</h1>
-        <article>
-          <h3>Finance Personal Assistant LLM</h3>
-          <p style={{color:'var(--muted)'}}>Multi-agent LLM-based financial assistant built with <strong>FastAPI</strong> and OpenAI integrations for expense analysis, budgeting, and financial recommendations. Backend uses Pydantic for validation. <a href="https://github.com/ali-murtadho/LLM-Finance-Assistant" target="_blank" rel="noreferrer">Repository</a></p>
-        </article>
+        <div className="page-header">
+          <h1>Projects</h1>
+          <p>A selection of personal and professional projects I&apos;ve built</p>
+        </div>
 
-        <article style={{marginTop:20}}>
-          <h3>Aplikasi Manajemen Keuangan (Finance Management App)</h3>
-          <p style={{color:'var(--muted)'}}>Interactive frontend app (React / Inertia) and scalable backend (Golang) for personal finance tracking. Implements role-based auth and microservice patterns. <a href="https://github.com/ali-murtadho/react-frontend-manajemen-keuangan/tree/dev-bs" target="_blank" rel="noreferrer">Frontend</a> · <a href="https://github.com/ali-murtadho/go-backend-manajemen-keuangan" target="_blank" rel="noreferrer">Backend</a></p>
-        </article>
-
-        <article style={{marginTop:20}}>
-          <h3>Aplikasi Backend RESTful API Website Blog</h3>
-          <p style={{color:'var(--muted)'}}>High-performance RESTful API using <strong>Golang Gin</strong>. Features JWT auth, role-based access, and Swagger API docs. <a href="https://github.com/ali-murtadho/Blogs-Project-Backend-App" target="_blank" rel="noreferrer">Repository</a></p>
-        </article>
-
-        <article style={{marginTop:20}}>
-          <h3>Sistem Informasi Klasifikasi Kualitas Padi Organik (wkpo-app-v2)</h3>
-          <p style={{color:'var(--muted)'}}>Agricultural information system using <strong>Python Django</strong> and Scikit-Learn (C4.5) for classifying organic rice quality. <a href="https://github.com/ali-murtadho/wkpo-app-v2" target="_blank" rel="noreferrer">Repository</a></p>
-        </article>
+        <div className="project-list">
+          {projects.map((project, i) => (
+            <div className="project-list-item" key={i}>
+              <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start' }}>
+                {project.icon && (
+                  <img src={project.icon} alt="" style={{ width: 48, height: 48, borderRadius: 10, flexShrink: 0 }} />
+                )}
+                <div style={{ flex: 1 }}>
+                  <h3>{project.title}</h3>
+                  <p>{project.desc}</p>
+                  <div className="tags">
+                    {project.tags.map((tag, j) => (
+                      <span className="tag" key={j}>{tag}</span>
+                    ))}
+                  </div>
+                  <div className="links">
+                    {project.links.map((link, j) => (
+                      <a key={j} href={link.url} target="_blank" rel="noreferrer">
+                        {link.label} →
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       </main>
     </Layout>
   )

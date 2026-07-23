@@ -1,6 +1,5 @@
 import Head from 'next/head'
 import Layout from '../components/Layout'
-import Header from '../components/Header'
 import Hero from '../components/Hero'
 import Experience from '../components/Experience'
 import Skills from '../components/Skills'
@@ -10,44 +9,87 @@ export default function Home() {
   return (
     <Layout>
       <Head>
-        <title>Ali Murtadho — Frontend Engineer</title>
-        <meta name="description" content="Portfolio — Ali Murtadho, Frontend Engineer" />
+        <title>Ali Murtadho — Software Engineer</title>
+        <meta name="description" content="Portfolio of Ali Murtadho — Software Engineer & System Analyst" />
         <meta property="og:image" content="/assets/og-image.svg" />
       </Head>
-      <Header />
 
       <main>
-        <Hero name="Ali Murtadho" title="Frontend Engineer" summary="Product-minded frontend engineer building fast, accessible web apps. Open to remote and hybrid roles." />
+        <Hero />
 
-        <div style={{display:'grid',gridTemplateColumns:'2fr 1fr',gap:20,marginTop:20}}>
-          <div>
-            <section className="card">
-              <h2>Summary</h2>
-              <p style={{color:'var(--muted)'}}>Product-minded frontend engineer focused on building fast, accessible, and maintainable web applications. Contact: <a href="mailto:alimurtadho1620@gmail.com">alimurtadho1620@gmail.com</a></p>
-            </section>
-
-            <section style={{marginTop:18}}>
+        <div className="main-grid">
+          <div className="main-content">
+            <section>
               <Experience />
             </section>
 
-            <section style={{marginTop:18}}>
-              <h2>Projects</h2>
-              <div className="projects-grid">
-                <ProjectCard title="Blogs-Project-Backend-App" desc="Backend for Blogs project (GitHub)." img="/assets/project-1.svg" />
-                <ProjectCard title="wkpo-app-v2" desc="Web application (frontend repo)." img="/assets/project-2.svg" />
+            <section>
+              <div className="card">
+                <div className="section-title">
+                  <div className="icon">🚀</div>
+                  <h2>Featured Projects</h2>
+                </div>
+                <div className="projects-grid">
+                  <ProjectCard
+                    title="Finance Personal Assistant"
+                    desc="Multi-agent LLM-based financial assistant with FastAPI and OpenAI."
+                    img="/assets/icons/projects/finance-llm.svg"
+                    tags={['FastAPI', 'Python', 'OpenAI']}
+                    link="https://github.com/ali-murtadho/LLM-Finance-Assistant"
+                  />
+                  <ProjectCard
+                    title="Blog Backend API"
+                    desc="High-performance RESTful API with Golang Gin, JWT auth, and Swagger docs."
+                    img="/assets/icons/projects/blog-api.svg"
+                    tags={['Golang', 'Gin', 'PostgreSQL']}
+                    link="https://github.com/ali-murtadho/Blogs-Project-Backend-App"
+                  />
+                </div>
               </div>
             </section>
           </div>
 
-          <aside>
+          <aside className="sidebar">
             <Skills />
 
-            <section className="card" style={{marginTop:16}}>
-              <h3>Contact</h3>
-              <p style={{color:'var(--muted)'}}>Email: <a href="mailto:alimurtadho1620@gmail.com">alimurtadho1620@gmail.com</a></p>
-              <p style={{color:'var(--muted)'}}>GitHub: <a href="https://github.com/ali-murtadho" target="_blank" rel="noreferrer">ali-murtadho</a></p>
-              <p style={{color:'var(--muted)'}}>Location: Indonesia</p>
-            </section>
+            <div className="card">
+              <div className="section-title">
+                <div className="icon">📬</div>
+                <h2>Contact</h2>
+              </div>
+              <div className="contact-card">
+                <div className="contact-item">
+                  <div className="contact-icon">✉</div>
+                  <a href="mailto:alimurtadho1620@gmail.com">alimurtadho1620@gmail.com</a>
+                </div>
+                <div className="contact-item">
+                  <div className="contact-icon">⌨</div>
+                  <a href="https://github.com/ali-murtadho" target="_blank" rel="noreferrer">github.com/ali-murtadho</a>
+                </div>
+                <div className="contact-item">
+                  <div className="contact-icon">🔗</div>
+                  <a href="https://linkedin.com/in/alimurtadho" target="_blank" rel="noreferrer">linkedin.com/in/alimurtadho</a>
+                </div>
+                <div className="contact-item">
+                  <div className="contact-icon">📍</div>
+                  <span>Indonesia</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="card">
+              <div className="section-title">
+                <div className="icon">🎓</div>
+                <h2>Education</h2>
+              </div>
+              <h4 style={{ margin: '0 0 4px', fontSize: '14px' }}>Jenderal Soedirman University</h4>
+              <p style={{ color: 'var(--muted)', fontSize: '13px', margin: '0 0 4px' }}>
+                B.Sc. Computer Science / Informatics
+              </p>
+              <p style={{ color: 'var(--muted)', fontSize: '13px', margin: 0 }}>
+                2020 – 2024 &bull; GPA: 3.71 / 4.00
+              </p>
+            </div>
           </aside>
         </div>
       </main>
