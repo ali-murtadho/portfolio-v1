@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import Head from 'next/head'
 import Layout from '../components/Layout'
 import Hero from '../components/Hero'
@@ -5,7 +6,64 @@ import Experience from '../components/Experience'
 import Skills from '../components/Skills'
 import ProjectCard from '../components/ProjectCard'
 
+const CATEGORIES = [
+  { id: 'all', name: 'All' },
+  { id: 'fullstack', name: 'Full Stack' },
+  { id: 'backend', name: 'Backend' },
+  { id: 'frontend', name: 'Frontend' },
+  { id: 'ml', name: 'Machine Learning' }
+]
+
+const FEATURED_PROJECTS = [
+  {
+    title: "Finance Management App",
+    desc: "Interactive personal finance tracking app using React, Inertia, and Golang backend.",
+    img: "/assets/icons/projects/finance-app.svg",
+    tags: ['React', 'Golang', 'Inertia.js', 'PostgreSQL'],
+    link: "https://github.com/ali-murtadho/go-backend-manajemen-keuangan",
+    category: 'fullstack'
+  },
+  {
+    title: "Finance Personal Assistant",
+    desc: "Multi-agent LLM-based financial assistant with FastAPI and OpenAI integrations.",
+    img: "/assets/icons/projects/finance-llm.svg",
+    tags: ['FastAPI', 'Python', 'OpenAI', 'LLM'],
+    link: "https://github.com/ali-murtadho/LLM-Finance-Assistant",
+    category: 'ml'
+  },
+  {
+    title: "Blog Backend API",
+    desc: "High-performance RESTful API with Golang Gin, JWT auth, and Swagger docs.",
+    img: "/assets/icons/projects/blog-api.svg",
+    tags: ['Golang', 'Gin', 'PostgreSQL', 'Swagger'],
+    link: "https://github.com/ali-murtadho/Blogs-Project-Backend-App",
+    category: 'backend'
+  },
+  {
+    title: "Portfolio Frontend v2",
+    desc: "Interactive and responsive portfolio UI built with React and Next.js.",
+    img: "/assets/icons/projects/portfolio-fe.svg",
+    tags: ['React', 'Next.js', 'CSS Modules'],
+    link: "https://github.com/ali-murtadho/portfolio-fe-v2",
+    category: 'frontend'
+  },
+  {
+    title: "Klasifikasi Kualitas Padi",
+    desc: "Decision Tree model built with Django and Scikit-Learn using C4.5 algorithm.",
+    img: "/assets/icons/projects/wkpo.svg",
+    tags: ['Python', 'Django', 'Scikit-Learn', 'ML'],
+    link: "https://github.com/ali-murtadho/wkpo-app-v2",
+    category: 'ml'
+  }
+]
+
 export default function Home() {
+  const [activeCategory, setActiveCategory] = useState('all')
+
+  const filteredProjects = activeCategory === 'all'
+    ? FEATURED_PROJECTS
+    : FEATURED_PROJECTS.filter(p => p.category === activeCategory)
+
   return (
     <Layout>
       <Head>
@@ -25,25 +83,34 @@ export default function Home() {
 
             <section>
               <div className="card">
-                <div className="section-title">
+                <div className="section-title" style={{ marginBottom: 16 }}>
                   <div className="icon">🚀</div>
                   <h2>Featured Projects</h2>
                 </div>
+
+                <div className="project-filter-container">
+                  {CATEGORIES.map(category => (
+                    <button
+                      key={category.id}
+                      className={`project-filter-btn ${activeCategory === category.id ? 'active' : ''}`}
+                      onClick={() => setActiveCategory(category.id)}
+                    >
+                      {category.name}
+                    </button>
+                  ))}
+                </div>
+
                 <div className="projects-grid">
-                  <ProjectCard
-                    title="Finance Personal Assistant"
-                    desc="Multi-agent LLM-based financial assistant with FastAPI and OpenAI."
-                    img="/assets/icons/projects/finance-llm.svg"
-                    tags={['FastAPI', 'Python', 'OpenAI']}
-                    link="https://github.com/ali-murtadho/LLM-Finance-Assistant"
-                  />
-                  <ProjectCard
-                    title="Blog Backend API"
-                    desc="High-performance RESTful API with Golang Gin, JWT auth, and Swagger docs."
-                    img="/assets/icons/projects/blog-api.svg"
-                    tags={['Golang', 'Gin', 'PostgreSQL']}
-                    link="https://github.com/ali-murtadho/Blogs-Project-Backend-App"
-                  />
+                  {filteredProjects.map((project, i) => (
+                    <ProjectCard
+                      key={i}
+                      title={project.title}
+                      desc={project.desc}
+                      img={project.img}
+                      tags={project.tags}
+                      link={project.link}
+                    />
+                  ))}
                 </div>
               </div>
             </section>
