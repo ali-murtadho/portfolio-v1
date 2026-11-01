@@ -1,4 +1,6 @@
-export default function Hero({ name = 'Ali Murtadho', title = 'Software Engineer', summary }) {
+export default function Hero({ profile }) {
+  const { name, title, subtitle, summary, avatar, cvUrl } = profile
+
   return (
     <section className="hero">
       <div className="left">
@@ -6,23 +8,27 @@ export default function Hero({ name = 'Ali Murtadho', title = 'Software Engineer
           👋 Hello, I&apos;m
         </p>
         <h1 className="headline">{name}</h1>
-        <p className="sub">{title} &bull; System Analyst</p>
-        <p className="hero-summary">
-          {summary || 'Building scalable enterprise applications across finance, government, and corporate systems. Experienced with Golang, Laravel, FastAPI, Node.js, and modern frontend frameworks.'}
+        <p className="sub">
+          {title}{subtitle && <> &bull; {subtitle}</>}
         </p>
+        <p className="hero-summary">{summary}</p>
         <div className="cta">
-          <a className="btn btn-primary" href="/assets/CV_Ali-Murtadho_June_2026.pdf" target="_blank" rel="noreferrer">
-            ↓ Download CV
-          </a>
+          {cvUrl && (
+            <a className="btn btn-primary" href={cvUrl} target="_blank" rel="noreferrer">
+              ↓ Download CV
+            </a>
+          )}
           <a className="btn btn-secondary" href="/contact">
             Get in Touch
           </a>
         </div>
       </div>
 
-      <div className="right">
-        <img className="avatar" src="/assets/profile.svg" alt="Ali Murtadho" />
-      </div>
+      {avatar && (
+        <div className="right">
+          <img className="avatar" src={avatar} alt={name} />
+        </div>
+      )}
     </section>
   )
 }

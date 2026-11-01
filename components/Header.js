@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import ThemeToggle from './ThemeToggle'
 
-export default function Header() {
+export default function Header({ profile = {} }) {
   const router = useRouter()
 
   const links = [
@@ -16,7 +16,7 @@ export default function Header() {
     <header>
       <div className="nav-inner">
         <Link href="/" className="nav-brand" style={{ textDecoration: 'none' }}>
-          AM
+          {profile.initials}
         </Link>
         <nav>
           {links.map(link => (
@@ -28,9 +28,11 @@ export default function Header() {
               {link.label}
             </Link>
           ))}
-          <span className="status-badge" style={{ marginLeft: 8 }}>
-            Available for hire
-          </span>
+          {profile.showStatus && profile.statusText && (
+            <span className="status-badge" style={{ marginLeft: 8 }}>
+              {profile.statusText}
+            </span>
+          )}
           <ThemeToggle />
         </nav>
       </div>

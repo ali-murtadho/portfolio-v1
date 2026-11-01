@@ -14,6 +14,7 @@ Website portfolio pribadi responsif yang dibangun menggunakan **Next.js 13 (Page
   - **Proyek (Projects)**: Showcase portofolio lengkap dengan filter tag teknologi.
   - **Kontak (Contact)**: Form kontak dan tautan media sosial.
 - **Dokumen CV Terintegrasi**: Tempat penyimpanan CV dalam format Markdown, DOCX, dan PDF di folder `/cv`.
+- **Panel Admin (`/admin`)**: Semua konten (profil, pengalaman, proyek, skill, pendidikan, sertifikasi, prestasi, organisasi, kontak) bisa diubah lewat panel berpassword. Data disimpan di PostgreSQL dan halaman langsung diperbarui setelah disimpan.
 
 ---
 
@@ -22,12 +23,17 @@ Website portfolio pribadi responsif yang dibangun menggunakan **Next.js 13 (Page
 ```text
 site/
 ├── components/          # Komponen UI reusable (Header, Hero, Experience, dll)
+│   └── admin/           # Komponen form untuk panel admin
 ├── cv/                  # File resume/CV (PDF, DOCX, Markdown)
-├── pages/               # Halaman Next.js (index, about, projects, contact, _app)
+├── data/                # defaultContent.js — konten awal (dipakai jika database kosong)
+├── lib/                 # Koneksi database, pembacaan konten, autentikasi, skema form admin
+├── pages/               # Halaman Next.js (index, about, projects, contact, admin, _app)
+│   └── api/admin/       # API login, logout, dan simpan konten
 ├── public/              # Aset statis (gambar, ikon, pdf)
 │   └── assets/          # Tempat menyimpan foto profil, ikon proyek, dll.
-├── styles/              # File CSS (styling global dan tema)
-├── next.config.js       # Konfigurasi Next.js (menggunakan output: 'export')
+├── styles/              # File CSS (styling global, tema, dan panel admin)
+├── .env.example         # Contoh variabel environment
+├── next.config.js       # Konfigurasi Next.js
 ├── package.json         # Dependensi dan script npm
 └── README.md            # Dokumentasi proyek (file ini)
 ```
@@ -49,24 +55,37 @@ Jalankan perintah berikut di dalam direktori `site/` untuk menginstal semua pust
 npm install
 ```
 
-### 3. Menjalankan Server Pengembangan (Local Dev Server)
+### 3. Konfigurasi Environment
+Salin `.env.example` menjadi `.env.local`, lalu isi:
+
+| Variabel | Keterangan |
+| --- | --- |
+| `DATABASE_URL` | Connection string PostgreSQL (Neon, Supabase, Vercel Postgres, atau Postgres lokal). Tabel `site_content` dibuat otomatis. |
+| `ADMIN_PASSWORD` | Password untuk login ke `/admin`. |
+| `ADMIN_SECRET` | (Opsional) Secret untuk menandatangani cookie sesi. |
+
+Tanpa `DATABASE_URL`, situs tetap jalan memakai konten dari `data/defaultContent.js`, tetapi panel admin tidak bisa menyimpan.
+
+### 4. Menjalankan Server Pengembangan (Local Dev Server)
 Jalankan server lokal untuk melihat hasil perubahan secara langsung (hot-reloading):
 ```bash
 npm run dev
 ```
-Buka [http://localhost:3000](http://localhost:3000) di browser Anda.
+Buka [http://localhost:3000](http://localhost:3000) di browser Anda, dan [http://localhost:3000/admin](http://localhost:3000/admin) untuk panel admin.
 
-### 4. Build dan Export Statis
-Proyek ini dikonfigurasi untuk mengekspor halaman ke bentuk HTML statis melalui pengaturan `output: 'export'` di `next.config.js`.
+### 5. Mengelola Konten lewat Panel Admin
+1. Buka `/admin` dan login dengan `ADMIN_PASSWORD`.
+2. Pilih bagian di sidebar (Profil, Pengalaman, Proyek, dll), ubah isinya, lalu klik **Simpan**.
+3. Halaman publik langsung di-render ulang. Bagian yang belum pernah disimpan tetap memakai konten default.
 
-Untuk membangun aplikasi:
+Gambar/ikon diisi berupa URL. Untuk file baru, taruh di `public/assets/` lalu isi path-nya (misal `/assets/foto.jpg`), atau pakai URL gambar dari luar.
+
+### 6. Build Produksi
 ```bash
 npm run build
+npm start
 ```
-Hasil ekspor statis akan otomatis dibuat di dalam folder `out/`. Anda dapat menguji hasil produksi secara lokal menggunakan server statis:
-```bash
-npx serve out
-```
+Halaman publik memakai ISR (Incremental Static Regeneration): tetap cepat seperti HTML statis, namun diperbarui otomatis saat konten disimpan dari panel.
 
 ---
 
@@ -89,6 +108,15 @@ Hubungkan terminal/CLI dengan akun Vercel Anda:
 vercel login
 ```
 Pilih metode login yang Anda inginkan (GitHub, GitLab, Email, dll). Silakan ikuti instruksi otentikasi di browser hingga selesai.
+
+### Langkah 2b: Siapkan Database & Environment Variable
+1. Buat database PostgreSQL gratis, misalnya lewat dashboard Vercel (**Storage → Create Database → Neon**) atau langsung di [neon.tech](https://neon.tech) / [supabase.com](https://supabase.com).
+2. Tambahkan variabel ke project Vercel (**Settings → Environment Variables**) atau lewat CLI:
+   ```bash
+   vercel env add DATABASE_URL
+   vercel env add ADMIN_PASSWORD
+   ```
+   Jika database dibuat lewat integrasi Vercel, pastikan nama variabelnya `DATABASE_URL`.
 
 ### Langkah 3: Inisialisasi & Deploy ke Preview (Development)
 Pastikan Anda berada di dalam folder `site/` (tempat file `package.json` berada), lalu jalankan perintah:
